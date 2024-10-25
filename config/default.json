@@ -1,0 +1,28 @@
+{
+    "\u5168\u5c40\u53c2\u6570": {
+        "Global_Twice_add": 0.3
+    },
+    "\u7f29\u7ba1\u6a21": {
+        "d_add": 5.55,
+        "d1_add": 11.25
+    },
+    "\u6210\u578b\u6a21": {
+        "d_add": 5.55,
+        "d1_add": 11.25
+    },
+    "\u6210\u578b\u82af\u8f74": {
+        "D_min": 0.3,
+        "total_length_min": 1060,
+        "total_length_max": 1140
+    },
+    "\u62bd\u7ba1\u82af\u8f74": {
+        "total_length_min": 1060,
+        "total_length_max": 1140
+    },
+    "\u62bd\u7ba1\u9000\u6599\u6a21": {
+        "A_add": 0.2
+    },
+    "\u6210\u578b\u9000\u6599\u6a21": {
+        "A_min": 0.1
+    }
+}

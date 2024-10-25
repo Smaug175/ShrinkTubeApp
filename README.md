@@ -1,2 +1,2 @@
 # ShrinkTubeApp
-giant抽管软件
+ giant抽管软件
