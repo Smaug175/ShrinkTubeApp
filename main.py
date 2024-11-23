@@ -213,35 +213,35 @@ class AppUiDemo(QMainWindow):
         self.logger = AutoLoggerClass()
         self.logger.info("程序开始运行")
 
-        # # 许可认证
-        # try:
-        #     authorization_instance = AuthorizationClass(self.logger)
-        #     self.message, self.pass_ = authorization_instance.get_message_and_pass()
-        #     # self.message : str; 含有认证信息的具体内容。
-        #     # self.pass_ : bool; 是否认证通过，True为通过，False为不通过。
-        #
-        #     if not self.pass_:
-        #         QMessageBox.information(self, "许可认证失败",
-        #                                 self.message + '\n获取License请联系：smaugfire@163.com\n程序结束运行')
-        #         print('许可认证失败！\n原因：'+self.message)
-        #
-        #         self.logger.error("License验证失败！")
-        #         self.logger.info("程序结束运行")
-        #         self.logger.close()
-        #         sys.exit()
-        #     else:
-        #         QMessageBox.information(self, "程序认证成功", "License 及 Mac Address 认证成功！")
-        # except Exception as e:
-        #     temp_str = ('程序认证失败！错误位置：\n'
-        #                 'AppUiDemo -> __init__ -> authorization_instance = AuthorizationClass(self.logger)\n'
-        #                 '报错信息：')+str(e)
-        #     QMessageBox.information(self, "程序认证失败", temp_str)
-        #     print(temp_str)
-        #
-        #     self.logger.error("程序认证失败！\n报错信息：{}".format(e))
-        #     self.logger.info("程序结束运行")
-        #     self.logger.close()
-        #     sys.exit()
+        # 许可认证
+        try:
+            authorization_instance = AuthorizationClass(self.logger)
+            self.message, self.pass_ = authorization_instance.get_message_and_pass()
+            # self.message : str; 含有认证信息的具体内容。
+            # self.pass_ : bool; 是否认证通过，True为通过，False为不通过。
+        
+            if not self.pass_:
+                QMessageBox.information(self, "许可认证失败",
+                                        self.message + '\n获取License请联系：smaugfire@163.com\n程序结束运行')
+                print('许可认证失败！\n原因：'+self.message)
+        
+                self.logger.error("License验证失败！")
+                self.logger.info("程序结束运行")
+                self.logger.close()
+                sys.exit()
+            else:
+                QMessageBox.information(self, "程序认证成功", "License 及 Mac Address 认证成功！")
+        except Exception as e:
+            temp_str = ('程序认证失败！错误位置：\n'
+                        'AppUiDemo -> __init__ -> authorization_instance = AuthorizationClass(self.logger)\n'
+                        '报错信息：')+str(e)
+            QMessageBox.information(self, "程序认证失败", temp_str)
+            print(temp_str)
+        
+            self.logger.error("程序认证失败！\n报错信息：{}".format(e))
+            self.logger.info("程序结束运行")
+            self.logger.close()
+            sys.exit()
         #
         # 登录窗口
         try:
@@ -269,10 +269,6 @@ class AppUiDemo(QMainWindow):
             self.logger.info("用户未登录，程序结束运行")
             self.logger.close()
             sys.exit()
-
-        # 开发阶段，直接赋值
-        # self.ID = '0001'
-        # self.user_name = 'smaugfire'
 
         # 抽管实例，用于计算和出图
         self.shrink_tube_instance = None
