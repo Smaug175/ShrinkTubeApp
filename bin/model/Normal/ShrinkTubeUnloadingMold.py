@@ -4,16 +4,12 @@ from bin.model._BaseMold import BaseMoldClass
 
 
 class DC0124_AD01(BaseMoldClass):
-    def __init__(self, logger, CSC):
+    def __init__(self, logger):
         """DC0124机器适用的抽管退料模"""
         super().__init__()
         self.logger = logger
         self.English_name = 'ShrinkTubeUnloadingMold'
         self.Chinese_name = '抽管退料模'
-
-        self.global_config = CSC.get_config('全局参数')  # 读取全局配置
-        self.global_twice_add = float(self.global_config['Global_Twice_add'])  # 读取全局配置的加0.3值
-        self.config_dict = CSC.get_config(self.Chinese_name)  # 读取当前名字的配置
 
         self.parameters = {}
 
@@ -37,12 +33,12 @@ class DC0124_AD01(BaseMoldClass):
         dx = []
         for x in range(len(Tx)):
             if Normal_Add:
-                dx.append(D - 2 * Tx['T' + str(x + 1)] + self.global_twice_add)
+                dx.append(D - 2 * Tx['T' + str(x + 1)] + 0.3)
             else:
                 dx.append(D - 2 * Tx['T' + str(x + 1)])
         # print(dx)
         # print('here')
-        A = max(dx) + float(self.config_dict['A_add'])
+        A = max(dx) + 0.2
         # print(A)
         self.parameters['A'] = str(round(A, 1))
 
@@ -62,16 +58,12 @@ class DC0124_AD01(BaseMoldClass):
         self.logger.info(self.Chinese_name+'参数设置成功')
 
 class DC0121_AD01(BaseMoldClass):
-    def __init__(self, logger, CSC):
+    def __init__(self, logger):
         """DC0121机器适用的抽管退料模"""
         super().__init__()
         self.logger = logger
         self.English_name = 'ShrinkTubeUnloadingMold'
         self.Chinese_name = '抽管退料模'
-
-        self.global_config = CSC.get_config('全局参数')  # 读取全局配置
-        self.global_twice_add = float(self.global_config['Global_Twice_add'])  # 读取全局配置的加0.3值
-        self.config_dict = CSC.get_config(self.Chinese_name)  # 读取当前名字的配置
 
         self.parameters = {}
 
@@ -94,12 +86,12 @@ class DC0121_AD01(BaseMoldClass):
         dx = []
         for x in range(len(Tx)):
             if Normal_Add:
-                dx.append(D - 2 * Tx['T' + str(x + 1)] + self.global_twice_add)
+                dx.append(D - 2 * Tx['T' + str(x + 1)] + 0.3)
             else:
                 dx.append(D - 2 * Tx['T' + str(x + 1)])
         # print(dx)
 
-        D = max(dx) + float(self.config_dict['A_add']) # D = max(dx) + A_add（抽管芯轴最大直径+0.2）
+        D = max(dx) + 0.2 # D = max(dx) + A_add（抽管芯轴最大直径+0.2）
 
         self.parameters['%%CD'] = str(round(D, 1))
 
@@ -121,16 +113,12 @@ class DC0121_AD01(BaseMoldClass):
         self.logger.info(self.Chinese_name+'参数设置成功')
 
 class DC0125_AD06_S(BaseMoldClass):
-    def __init__(self, logger, CSC):
+    def __init__(self, logger):
         """DC0125机器适用的抽管退料模"""
         super().__init__()
         self.logger = logger
         self.English_name = 'ShrinkTubeUnloadingMold'
         self.Chinese_name = '抽管退料模'
-
-        self.global_config = CSC.get_config('全局参数')  # 读取全局配置
-        self.global_twice_add = float(self.global_config['Global_Twice_add'])  # 读取全局配置的加0.3值
-        self.config_dict = CSC.get_config(self.Chinese_name)  # 读取当前名字的配置
 
         self.parameters = {}
 
@@ -153,13 +141,13 @@ class DC0125_AD06_S(BaseMoldClass):
         dx = []
         for x in range(len(Tx)):
             if Normal_Add:
-                dx.append(D - 2 * Tx['T' + str(x + 1)] + self.global_twice_add)
+                dx.append(D - 2 * Tx['T' + str(x + 1)] + 0.3)
             else:
                 dx.append(D - 2 * Tx['T' + str(x + 1)])
         # print(dx)
         # print('here')
 
-        new_D = max(dx) + float(self.config_dict['A_add'])  # D = max(dx) + A_add（抽管芯轴最大直径+0.2）
+        new_D = max(dx) + 0.2  # D = max(dx) + A_add（抽管芯轴最大直径+0.2）
 
         self.parameters['%%CD'] = str(round(new_D, 1))
 

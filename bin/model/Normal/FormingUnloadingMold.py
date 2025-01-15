@@ -4,16 +4,12 @@ from bin.model._BaseMold import BaseMoldClass
 
 
 class DC0124_AD02(BaseMoldClass):
-    def __init__(self, logger, CSC):
+    def __init__(self, logger):
         """DC0124机器适用的成型退料模"""
         super().__init__()
         self.logger = logger
         self.English_name = 'FormingUnloadingMold'
         self.Chinese_name = '成型退料模'
-
-        self.global_config = CSC.get_config('全局参数')  # 读取全局配置
-        self.global_twice_add = float(self.global_config['Global_Twice_add'])  # 读取全局配置的加0.3值
-        self.config_dict = CSC.get_config(self.Chinese_name)  # 读取当前名字的配置
 
         self.parameters = {}
 
@@ -21,7 +17,7 @@ class DC0124_AD02(BaseMoldClass):
 
         self.logger.info(self.Chinese_name+'初始化完成')
 
-    def set_params(self, tube_df_params, external_params, Twice):
+    def set_params(self, tube_df_params, external_params, Normal_Add):
         try:
             #将df_params中的参数提取出来
             L, D, Lx, Mx, Tx = self._get_params_from_tube(tube_df_params)
@@ -36,8 +32,8 @@ class DC0124_AD02(BaseMoldClass):
 
         Tx_v = list(Tx.values())
 
-        if Twice:
-            A = float(D) - 2 * max(Tx_v) - float(self.config_dict['A_min'])
+        if Normal_Add:
+            A = float(D) - 2 * max(Tx_v) - 0.1
         else:
             self.logger.error('ERROR IN SET PARAMS: 成型退料模参数A必须是两抽。当前情况为一抽。')
             return
@@ -60,16 +56,12 @@ class DC0124_AD02(BaseMoldClass):
         self.logger.info(self.Chinese_name+'参数设置成功')
 
 class DC0121_AD02(BaseMoldClass):
-    def __init__(self, logger, CSC):
+    def __init__(self, logger):
         """DC0121机器适用的成型退料模"""
         super().__init__()
         self.logger = logger
         self.English_name = 'FormingUnloadingMold'
         self.Chinese_name = '成型退料模'
-
-        self.global_config = CSC.get_config('全局参数')  # 读取全局配置
-        self.global_twice_add = float(self.global_config['Global_Twice_add'])  # 读取全局配置的加0.3值
-        self.config_dict = CSC.get_config(self.Chinese_name)  # 读取当前名字的配置
 
         self.parameters = {}
 
@@ -77,7 +69,7 @@ class DC0121_AD02(BaseMoldClass):
 
         self.logger.info(self.Chinese_name+'初始化完成')
 
-    def set_params(self, tube_df_params, external_params, Twice):
+    def set_params(self, tube_df_params, external_params, Normal_Add):
         try:
             #将df_params中的参数提取出来
             L, D, Lx, Mx, Tx = self._get_params_from_tube(tube_df_params)
@@ -112,16 +104,12 @@ class DC0121_AD02(BaseMoldClass):
 
 
 class DC0125_AD06_F(BaseMoldClass):
-    def __init__(self, logger, CSC):
+    def __init__(self, logger):
         """DC0125机器适用的抽管退料模"""
         super().__init__()
         self.logger = logger
         self.English_name = 'FormingUnloadingMold'
         self.Chinese_name = '成型退料模'
-
-        self.global_config = CSC.get_config('全局参数')  # 读取全局配置
-        self.global_twice_add = float(self.global_config['Global_Twice_add'])  # 读取全局配置的加0.3值
-        self.config_dict = CSC.get_config(self.Chinese_name)  # 读取当前名字的配置
 
         self.parameters = {}
 
@@ -144,7 +132,7 @@ class DC0125_AD06_F(BaseMoldClass):
         dx = []
         for x in range(len(Tx)):
             if Normal_Add:
-                dx.append(D - 2 * Tx['T' + str(x + 1)] + self.global_twice_add)
+                dx.append(D - 2 * Tx['T' + str(x + 1)] + 0.3)
             else:
                 dx.append(D - 2 * Tx['T' + str(x + 1)])
         # print(dx)

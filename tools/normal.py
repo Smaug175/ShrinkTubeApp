@@ -1,14 +1,6 @@
 from bin.utils.AutoLogger import AutoLoggerClass
 
-from bin.utils.ConfigSetting import ConfigSettingClass
-
 logger = AutoLoggerClass()
-# 加密数据的实例
-# crypto_data_instance = CryptoDataClass(logger)
-
-# 配置文件的路径，初始化为默认配置文件
-config_path = 'config/default.json'
-config_setting_instance = ConfigSettingClass(logger, config_path)
 
 # 不同机床，是否成型操作，导致模具的选择有所不同
 MOLDS = {

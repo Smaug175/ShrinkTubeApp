@@ -3,16 +3,12 @@ from datetime import date
 from bin.model._BaseMold import BaseMoldClass
 
 class DC0124_SS01(BaseMoldClass):
-    def __init__(self, logger, CSC):
+    def __init__(self, logger):
         """124成型芯轴"""
         super().__init__()
         self.logger = logger
         self.English_name = 'FormingMandrel'
         self.Chinese_name = '成型芯轴'
-
-        self.global_config = CSC.get_config('全局参数')  # 读取全局配置
-        self.global_twice_add = float(self.global_config['Global_Twice_add'])  # 读取全局配置的加0.3值
-        self.config_dict = CSC.get_config(self.Chinese_name)  # 读取当前名字的配置
 
         self.parameters = {}
 
@@ -36,7 +32,7 @@ class DC0124_SS01(BaseMoldClass):
         Tx_v = list(Tx.values())
 
         if Normal_Add:
-            _D = float(D) - 2 * max(Tx_v) - float(self.config_dict['D_min'])
+            _D = float(D) - 2 * max(Tx_v) - 0.3
         else:
             self.logger.error('ERROR IN SET PARAMS: 成型退料模参数A必须是两抽。当前情况为一抽。')
             return
@@ -57,8 +53,8 @@ class DC0124_SS01(BaseMoldClass):
         #LT
         Sum_Lx = L #总长度?
 
-        min_L = float(self.config_dict['total_length_min'])
-        max_L = float(self.config_dict['total_length_max'])
+        min_L = 1060
+        max_L = 1140
 
         if Sum_Lx +320 < min_L:
             self.parameters['LT'] = str(min_L)
@@ -84,16 +80,12 @@ class DC0124_SS01(BaseMoldClass):
         self.logger.info(self.Chinese_name+'参数设置成功')
 
 class DC0121_SS01(BaseMoldClass):
-    def __init__(self, logger, CSC):
+    def __init__(self, logger):
         """121成型芯轴"""
         super().__init__()
         self.logger = logger
         self.English_name = 'FormingMandrel'
         self.Chinese_name = '成型芯轴'
-
-        self.global_config = CSC.get_config('全局参数')  # 读取全局配置
-        self.global_twice_add = float(self.global_config['Global_Twice_add'])  # 读取全局配置的加0.3值
-        self.config_dict = CSC.get_config(self.Chinese_name)  # 读取当前名字的配置
 
         self.parameters = {}
 
@@ -117,7 +109,7 @@ class DC0121_SS01(BaseMoldClass):
         Tx_v = list(Tx.values())
 
         if Normal_Add:
-            _D = float(D) - 2 * max(Tx_v) - float(self.config_dict['D_min'])
+            _D = float(D) - 2 * max(Tx_v) - 0.3
         else:
             self.logger.error('ERROR IN SET PARAMS: 成型退料模参数A必须是两抽。当前情况为一抽。')
             return
@@ -138,8 +130,8 @@ class DC0121_SS01(BaseMoldClass):
         #LT
         Sum_Lx = L #总长度?
 
-        min_L = float(self.config_dict['total_length_min'])
-        max_L = float(self.config_dict['total_length_max'])
+        min_L = 1060
+        max_L = 1140
 
         if Sum_Lx +320 < min_L:
             self.parameters['LT'] = str(min_L)
@@ -166,16 +158,12 @@ class DC0121_SS01(BaseMoldClass):
 
 
 class DC0125_SS01(BaseMoldClass):
-    def __init__(self, logger, CSC):
+    def __init__(self, logger):
         """125成型芯轴"""
         super().__init__()
         self.logger = logger
         self.English_name = 'FormingMandrel'
         self.Chinese_name = '成型芯轴'
-
-        self.global_config = CSC.get_config('全局参数')  # 读取全局配置
-        self.global_twice_add = float(self.global_config['Global_Twice_add'])  # 读取全局配置的加0.3值
-        self.config_dict = CSC.get_config(self.Chinese_name)  # 读取当前名字的配置
 
         self.parameters = {}
 
@@ -199,7 +187,7 @@ class DC0125_SS01(BaseMoldClass):
         Tx_v = list(Tx.values())
 
         if Normal_Add:
-            _D = float(D) - 2 * max(Tx_v) - float(self.config_dict['D_min'])
+            _D = float(D) - 2 * max(Tx_v) - 0.3
         else:
             self.logger.error('ERROR IN SET PARAMS: 成型退料模参数A必须是两抽。当前情况为一抽。')
             return
@@ -220,8 +208,8 @@ class DC0125_SS01(BaseMoldClass):
         #LT
         Sum_Lx = L #总长度?
 
-        min_L = float(self.config_dict['total_length_min'])
-        max_L = float(self.config_dict['total_length_max'])
+        min_L = 1060
+        max_L = 1140
 
         if Sum_Lx +320 < min_L:
             self.parameters['LT'] = str(min_L)

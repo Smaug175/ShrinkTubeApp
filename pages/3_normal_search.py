@@ -1,8 +1,5 @@
 import streamlit as st
 from menu import menu_with_redirect
-import tempfile
-from tools.normal import logger, config_setting_instance, MOLDS
-from bin.ShrinkTube import ShrinkTubeClass
 from bin.utils.SQLite_control import MoldControl
 
 # 显示侧边

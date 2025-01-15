@@ -116,8 +116,6 @@ class ShrinkTubeClass:
 
     def get_numbers(self, logger, mold_name, machine_type):
         """通过查询数据库，获取图号"""
-        # TODO: 不同的机器的图号不同，需要根据机器的名称来获取
-
         if machine_type == 'DC0124':
             self.Drawing_Number = {
                 '裁剪夹模': 'AD03',
@@ -150,28 +148,12 @@ class ShrinkTubeClass:
                 '抽管退料模': 'AD06_S',
             }
 
-        # 获取新的图号
-        # crypto_data = CryptoDataClass(logger)
-
         try:
             # machine_type
             # big_graph_number
             sqlite_control = MoldControl(self.logger)
             number = sqlite_control.query_max_graph_number(machine_type, self.Drawing_Number[mold_name])
             # 如果不存在记录，则会返回 0
-            
-            # name = machine_type+'-'+self.Drawing_Number[mold_name]
-            # print(name)
-            # data_dict = crypto_data.decrypt_file_by_big_graph_number(name)
-
-            # # print('获取{}的图号，数据字典为：'.format(mold_name))
-            # # pprint(data_dict.keys())
-
-            # keys = data_dict.keys()
-            # index = []
-            # for key in keys:
-            #     index.append(int(key[-4:]))
-                
             number = number + 1
             str_number = str(number)
 
@@ -186,7 +168,7 @@ class ShrinkTubeClass:
             new_number = self.Drawing_Number[mold_name] + '0000'
             return machine_type + '-' + new_number
 
-    def calculate(self, user_name: str, config_setting_instance, Normal_Add: bool, mold_list: list, machine_type: str) -> dict:
+    def calculate(self, user_name: str, Normal_Add: bool, mold_list: list, machine_type: str) -> dict:
         """计算模具的参数"""
 
         self.Mold_Object = {}
@@ -213,13 +195,13 @@ class ShrinkTubeClass:
                 '抽管退料模': 1,
             }
             self.Mold_Object = {
-                        '裁剪夹模': DC0124_AD03(self.logger, config_setting_instance),
-                        '成型模': DIEO(self.logger, config_setting_instance),
-                        '成型芯轴': DC0124_SS01(self.logger, config_setting_instance),
-                        '成型退料模': DC0124_AD02(self.logger, config_setting_instance),
-                        '缩管模': ADIE(self.logger, config_setting_instance),
-                        '抽管芯轴': ADBT(self.logger, config_setting_instance),
-                        '抽管退料模': DC0124_AD01(self.logger, config_setting_instance),
+                        '裁剪夹模': DC0124_AD03(self.logger),
+                        '成型模': DIEO(self.logger),
+                        '成型芯轴': DC0124_SS01(self.logger),
+                        '成型退料模': DC0124_AD02(self.logger),
+                        '缩管模': ADIE(self.logger),
+                        '抽管芯轴': ADBT(self.logger),
+                        '抽管退料模': DC0124_AD01(self.logger),
                     }
 
             mold_name = ['裁剪夹模', '成型模', '成型芯轴', '成型退料模', '缩管模', '抽管芯轴', '抽管退料模']
@@ -246,7 +228,7 @@ class ShrinkTubeClass:
             if not Normal_Add and len(Tx) > 2 and '裁剪夹模' in mold_list:
                 # 计算额外的裁剪夹模
                 # 裁剪夹模_的参数和裁剪夹模一样，只是不加0.3
-                self.Mold_Object['裁剪夹模_'] = DC0124_AD03_(self.logger, config_setting_instance)
+                self.Mold_Object['裁剪夹模_'] = DC0124_AD03_(self.logger)
                 # 这里的图号，是根据上面给的图号来的
                 before = temp_number[:-4]
                 after = temp_number[-4:]
@@ -275,14 +257,14 @@ class ShrinkTubeClass:
                 '抽管退料模': 1,
             }
             self.Mold_Object = {
-                '裁剪夹模1': DC0121_AD03(self.logger, config_setting_instance),
-                '裁剪夹模2': DC0121_AD04(self.logger, config_setting_instance),
-                '成型模': DIEO(self.logger, config_setting_instance),
-                '成型芯轴': DC0121_SS01(self.logger, config_setting_instance),
-                '成型退料模': DC0121_AD02(self.logger, config_setting_instance),
-                '缩管模': ADIE(self.logger, config_setting_instance),
-                '抽管芯轴': ADBT(self.logger, config_setting_instance),
-                '抽管退料模': DC0121_AD01(self.logger, config_setting_instance),
+                '裁剪夹模1': DC0121_AD03(self.logger),
+                '裁剪夹模2': DC0121_AD04(self.logger),
+                '成型模': DIEO(self.logger),
+                '成型芯轴': DC0121_SS01(self.logger),
+                '成型退料模': DC0121_AD02(self.logger),
+                '缩管模': ADIE(self.logger),
+                '抽管芯轴': ADBT(self.logger),
+                '抽管退料模': DC0121_AD01(self.logger),
             }
 
             mold_name = ['裁剪夹模1', '裁剪夹模2', '成型模', '成型芯轴', '成型退料模', '缩管模', '抽管芯轴', '抽管退料模']
@@ -313,13 +295,13 @@ class ShrinkTubeClass:
                 '抽管退料模': 2,
             }
             self.Mold_Object = {
-                '裁剪夹模': DC0125_AD07(self.logger, config_setting_instance),
-                '成型模': DIEO(self.logger, config_setting_instance),
-                '成型芯轴': DC0125_SS01(self.logger, config_setting_instance),
-                '成型退料模': DC0125_AD06_F(self.logger, config_setting_instance),
-                '缩管模': ADIE(self.logger, config_setting_instance),
-                '抽管芯轴': ADBT(self.logger, config_setting_instance),
-                '抽管退料模': DC0125_AD06_S(self.logger, config_setting_instance),
+                '裁剪夹模': DC0125_AD07(self.logger),
+                '成型模': DIEO(self.logger),
+                '成型芯轴': DC0125_SS01(self.logger),
+                '成型退料模': DC0125_AD06_F(self.logger),
+                '缩管模': ADIE(self.logger),
+                '抽管芯轴': ADBT(self.logger),
+                '抽管退料模': DC0125_AD06_S(self.logger),
             }
 
             mold_name = ['裁剪夹模', '成型模', '成型芯轴', '成型退料模', '缩管模', '抽管芯轴', '抽管退料模']

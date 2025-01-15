@@ -4,18 +4,13 @@ from bin.model._BaseMold import BaseMoldClass
 
 
 class DC0124_AD03(BaseMoldClass):
-    def __init__(self, logger, CSC):
+    def __init__(self, logger):
         """DC0124机器适用的裁剪夹模"""
         super().__init__()
 
         self.logger = logger
         self.English_name = 'CuttingClipMold'
         self.Chinese_name = '裁剪夹模'
-
-        self.global_config = CSC.get_config('全局参数') # 读取全局配置
-        self.global_twice_add = float(self.global_config['Global_Twice_add']) # 读取全局配置的加0.3值
-
-        self.config_dict = CSC.get_config(self.Chinese_name) # 读取当前名字的配置
 
         self.parameters = {}
         self.change = False
@@ -52,18 +47,13 @@ class DC0124_AD03(BaseMoldClass):
         self.logger.info(self.Chinese_name+'参数设置成功')
 
 class DC0124_AD03_(BaseMoldClass):
-    def __init__(self, logger, CSC):
+    def __init__(self, logger):
         """这个裁剪夹模_用于保存DC0124抽管时，额外的重复图纸。因为其图号与裁剪夹模重复，所以单独用一个模型保存。"""
         super().__init__()
 
         self.logger = logger
         self.English_name = 'CuttingClipMold_'
         self.Chinese_name = '裁剪夹模_'
-
-        self.global_config = CSC.get_config('全局参数') # 读取全局配置
-        self.global_twice_add = float(self.global_config['Global_Twice_add']) # 读取全局配置的加0.3值
-
-        self.config_dict = CSC.get_config(self.Chinese_name) # 读取当前名字的配置
 
         self.parameters = {}
         self.change = False
@@ -81,9 +71,7 @@ class DC0124_AD03_(BaseMoldClass):
 
         self.parameters['图号'] = external_params['图号']
 
-
         self.parameters['%%CD'] = str(D + abs(Tx['T2']-Tx['T3']))
-
 
         #件数
         self.parameters['件数'] = external_params['件数']
@@ -101,18 +89,13 @@ class DC0124_AD03_(BaseMoldClass):
         self.logger.info(self.Chinese_name+'参数设置成功')
 
 class DC0121_AD03(BaseMoldClass):
-    def __init__(self, logger, CSC):
+    def __init__(self, logger):
         """DC0121机器适用的裁剪夹模1"""
         super().__init__()
 
         self.logger = logger
         self.English_name = 'CuttingClipMold1'
         self.Chinese_name = '裁剪夹模1'
-
-        self.global_config = CSC.get_config('全局参数') # 读取全局配置
-        self.global_twice_add = float(self.global_config['Global_Twice_add']) # 读取全局配置的加0.3值
-
-        self.config_dict = CSC.get_config(self.Chinese_name) # 读取当前名字的配置
 
         self.parameters = {}
         self.change = False
@@ -129,7 +112,6 @@ class DC0121_AD03(BaseMoldClass):
         self.machine_type = external_params['图号'].split('-')[0]
 
         self.parameters['图号'] = external_params['图号']
-
 
         self.parameters['%%CD'] = str(D)
 
@@ -152,18 +134,13 @@ class DC0121_AD03(BaseMoldClass):
 
 
 class DC0121_AD04(BaseMoldClass):
-    def __init__(self, logger, CSC):
+    def __init__(self, logger):
         """DC0121机器适用的裁剪夹模2"""
         super().__init__()
 
         self.logger = logger
         self.English_name = 'CuttingClipMold2'
         self.Chinese_name = '裁剪夹模2'
-
-        self.global_config = CSC.get_config('全局参数') # 读取全局配置
-        self.global_twice_add = float(self.global_config['Global_Twice_add']) # 读取全局配置的加0.3值
-
-        self.config_dict = CSC.get_config(self.Chinese_name) # 读取当前名字的配置
 
         self.parameters = {}
 
@@ -205,17 +182,13 @@ class DC0121_AD04(BaseMoldClass):
 
 
 class DC0125_AD07(BaseMoldClass):
-    def __init__(self, logger, CSC):
+    def __init__(self, logger):
         """DC0125机器适用的裁剪夹模"""
         super().__init__()
 
         self.logger = logger
         self.English_name = 'CuttingClipMold'
         self.Chinese_name = '裁剪夹模'
-
-        self.global_config = CSC.get_config('全局参数') # 读取全局配置
-        self.global_twice_add = float(self.global_config['Global_Twice_add']) # 读取全局配置的加0.3值
-        self.config_dict = CSC.get_config(self.Chinese_name) # 读取当前名字的配置
 
         self.parameters = {}
         self.change = False
@@ -232,7 +205,6 @@ class DC0125_AD07(BaseMoldClass):
         self.machine_type = external_params['图号'].split('-')[0]
 
         self.parameters['图号'] = external_params['图号']
-
 
         self.parameters['%%CD'] = str(D)
 

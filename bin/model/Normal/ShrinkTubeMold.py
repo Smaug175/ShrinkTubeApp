@@ -4,15 +4,11 @@ from bin.model._BaseMold import BaseMoldClass
 
 
 class ADIE(BaseMoldClass):
-    def __init__(self, logger, CSC):
+    def __init__(self, logger):
         super().__init__()
         self.logger = logger
         self.English_name = 'ShrinkTubeMold'
         self.Chinese_name = '缩管模'
-
-        self.global_config = CSC.get_config('全局参数')  # 读取全局配置
-        self.global_twice_add = float(self.global_config['Global_Twice_add'])  # 读取全局配置的加0.3值
-        self.config_dict = CSC.get_config(self.Chinese_name)  # 读取当前名字的配置
 
         self.parameters = {}
 
@@ -33,17 +29,17 @@ class ADIE(BaseMoldClass):
         self.parameters['图号'] = external_params['图号']
 
         if Normal_Add:
-            self.parameters['%%CD'] = str(round(D+self.global_twice_add,2))
+            self.parameters['%%CD'] = str(round(D+0.3,2))
 
-            self.parameters['%%Cd'] = str(round(D+float(self.config_dict['d_add'])+self.global_twice_add,2))
+            self.parameters['%%Cd'] = str(round(D+5.55+0.3,2))
 
-            self.parameters['%%Cd1'] = str(round(D+float(self.config_dict['d1_add'])+self.global_twice_add,2))
+            self.parameters['%%Cd1'] = str(round(D+11.25+0.3,2))
         else:
             self.parameters['%%CD'] = str(round(D,2))
 
-            self.parameters['%%Cd'] = str(round(D+float(self.config_dict['d_add']),2))
+            self.parameters['%%Cd'] = str(round(D+5.55,2))
 
-            self.parameters['%%Cd1'] = str(round(D+float(self.config_dict['d1_add']),2))
+            self.parameters['%%Cd1'] = str(round(D+11.25,2))
 
         #材质对应表：
         D_d2 = {

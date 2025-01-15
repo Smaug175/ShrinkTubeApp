@@ -4,16 +4,12 @@ from bin.model._BaseMold import BaseMoldClass
 
 
 class ADBT(BaseMoldClass):
-    def __init__(self, logger,CSC):
+    def __init__(self, logger):
         """不同的机床共用的抽管芯轴"""
         super().__init__()
         self.logger = logger
         self.English_name = 'ShrinkTubeMandrel'
         self.Chinese_name = '抽管芯轴'
-
-        self.global_config = CSC.get_config('全局参数')  # 读取全局配置
-        self.global_twice_add = self.global_config['Global_Twice_add']  # 读取全局配置的加0.3值
-        self.config_dict = CSC.get_config(self.Chinese_name)  # 读取当前名字的配置
 
         self.parameters = {}
 
@@ -41,7 +37,7 @@ class ADBT(BaseMoldClass):
             name = '%%Cd'+str(x+1)
 
             if Normal_Add:
-                self.parameters[name] = round(D - 2 * Tx['T'+str(x+1)] + self.global_twice_add,1)
+                self.parameters[name] = round(D - 2 * Tx['T'+str(x+1)] + 0.3,1)
             else:
                 self.parameters[name] = round(D - 2 * Tx['T'+str(x+1)],1)
             T.append(Tx['T'+str(x+1)])
@@ -92,8 +88,8 @@ class ADBT(BaseMoldClass):
         # for key in Lx:
         #     Sum_Lx += Lx[key]
 
-        min_L = float(self.config_dict['total_length_min'])
-        max_L = float(self.config_dict['total_length_max'])
+        min_L = 1060
+        max_L = 1140
 
         if Sum_Lx + 320 < min_L:
             self.parameters['LT'] = str(min_L)
@@ -102,7 +98,7 @@ class ADBT(BaseMoldClass):
 
         #缩管模直径:D+0.3
         if Normal_Add:
-            self.parameters['缩管模直径'] = D + self.global_twice_add
+            self.parameters['缩管模直径'] = D + 0.3
         else:
             self.parameters['缩管模直径'] = D
 

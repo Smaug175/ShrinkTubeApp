@@ -1,7 +1,7 @@
 import streamlit as st
 from menu import menu_with_redirect
 import tempfile
-from tools.normal import logger, config_setting_instance, MOLDS
+from tools.normal import logger, MOLDS
 from bin.ShrinkTube import ShrinkTubeClass
 
 # 显示侧边
@@ -67,8 +67,7 @@ def calculate(settings):
     forming = settings['forming']
     machine_type = settings['machine_type']
     mold_list = settings['mold_list']
-    st.session_state.shrink_tube_instance.calculate(user_name, config_setting_instance, forming, mold_list,
-                                                 machine_type)
+    st.session_state.shrink_tube_instance.calculate(user_name, forming, mold_list, machine_type)
 
 import pandas as pd
 
