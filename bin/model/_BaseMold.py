@@ -145,7 +145,7 @@ class BaseMoldClass:
                     if index:
                         continue
                     else:
-                        self.logger.info(f"参数：{text.dxf.text}, 位置：{text.dxf.insert}，未找到对应的值！")
+                        self.logger.info(f"{self.Chinese_name}参数：{text.dxf.text}, 位置：{text.dxf.insert}，未找到对应的值！")
                         # print(f"没有找到对应的值：{text.dxf.text}")
                         continue
             self.logger.info(self.Chinese_name+'的参数修改，修改标准DXF文件')

@@ -1,5 +1,5 @@
 import os
-
+import json
 import pandas as pd
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment
@@ -12,8 +12,10 @@ from bin.model.Normal.ShrinkTubeMandrel import ADBT
 from bin.model.Normal.ShrinkTubeMold import ADIE
 from bin.model.Normal.ShrinkTubeUnloadingMold import DC0124_AD01, DC0121_AD01, DC0125_AD06_S
 from bin.model.TubeModel import TubeModelClass
-from bin.utils.CryptoData import CryptoDataClass
 
+import shutil
+import zipfile
+from bin.utils.SQLite_control import MoldControl
 
 class ShrinkTubeClass:
     """缩管计算类
@@ -70,26 +72,47 @@ class ShrinkTubeClass:
         """将管件参数转换为字典，并返回"""
         return self.df_to_dict(self.tube_df_params)
 
-    def __init__(self, logger, file_path: str):
+    def get_tube_params_df(self):
+        """增加参数描述"""
+        parameter_list = list(self.tube_df_params['Parameter'])
+        value_list = []
+        for v in self.tube_df_params['Value']:
+            value_list.append(str(v))
+        description_list = []
+        for param in parameter_list:
+            description_list.append(self.Parameter_Description['管件参数'][param])
+        tube_params_df = pd.DataFrame({
+            '参数': parameter_list,
+            '值': value_list,
+            '描述': description_list
+        })
+        return tube_params_df
+
+    def __init__(self, logger, file_path):
         """初始化ShrinkTubeClass"""
-
         self.logger = logger
+        # 导入模具的参数描述和计算方法
+        with open('bin/model/Normal/Parameter_Description.json', 'r', encoding='utf-8') as file:
+            self.Parameter_Description = json.load(file)
+        with open('bin/model/Normal/Parameter_Calculate_Method.json', 'r', encoding='utf-8') as file:
+            self.Parameter_Calculate_Method = json.load(file)
 
+        if file_path:
+            self.load_tube(file_path)
+        else:
+            print('未传入管件参数，无法计算，请使用load_tube()函数加载文件')
+
+    def load_tube(self, file_path: str):
         self.file_name = file_path.split('/')[-1][:-4]
-
-        # 读取管件的参数
-        tube = TubeModelClass(file_path, logger)
-
+        tube = TubeModelClass(file_path, self.logger)
         self.tube_df_params = tube.get_params()
-        # self.tube_df_params : pd.DataFrame; 管件的参数，储存格式为DataFrame
-
         # 额外信息
         self.external_params = {
-                '图号': '/',
-                '件数': '/',
-                '车种规格': self.get_tube_params()['车种规格'],  # 从输入图中读取该参数
-                '设计者': '/',  # 来自操作的用户登录的信息
-            }
+            '图号': '/',
+            '件数': '/',
+            '车种规格': self.get_tube_params()['车种规格'],  # 从输入图中读取该参数
+            '设计者': '/',  # 来自操作的用户登录的信息
+        }
 
     def get_numbers(self, logger, mold_name, machine_type):
         """通过查询数据库，获取图号"""
@@ -128,20 +151,28 @@ class ShrinkTubeClass:
             }
 
         # 获取新的图号
-        crypto_data = CryptoDataClass(logger)
+        # crypto_data = CryptoDataClass(logger)
 
         try:
-            name = machine_type+'-'+self.Drawing_Number[mold_name]
-            data_dict = crypto_data.decrypt_file_by_big_graph_number(name)
+            # machine_type
+            # big_graph_number
+            sqlite_control = MoldControl(self.logger)
+            number = sqlite_control.query_max_graph_number(machine_type, self.Drawing_Number[mold_name])
+            # 如果不存在记录，则会返回 0
+            
+            # name = machine_type+'-'+self.Drawing_Number[mold_name]
+            # print(name)
+            # data_dict = crypto_data.decrypt_file_by_big_graph_number(name)
 
-            # print('获取{}的图号，数据字典为：'.format(mold_name))
-            # pprint(data_dict.keys())
+            # # print('获取{}的图号，数据字典为：'.format(mold_name))
+            # # pprint(data_dict.keys())
 
-            keys = data_dict.keys()
-            index = []
-            for key in keys:
-                index.append(int(key[-4:]))
-            number = max(index) + 1
+            # keys = data_dict.keys()
+            # index = []
+            # for key in keys:
+            #     index.append(int(key[-4:]))
+                
+            number = number + 1
             str_number = str(number)
 
             if len(str_number) != 4:
@@ -150,13 +181,9 @@ class ShrinkTubeClass:
                 new_number = self.Drawing_Number[mold_name] + str_number
             return machine_type + '-' + new_number
         except:
-            # TODO: 在这里可以修改初始图号
-
             print('没有找到{}的图号，将使用默认的图号'.format(mold_name))
             self.logger.error('没有找到{}的图号，将使用默认的图号'.format(mold_name))
-
             new_number = self.Drawing_Number[mold_name] + '0000'
-
             return machine_type + '-' + new_number
 
     def calculate(self, user_name: str, config_setting_instance, Normal_Add: bool, mold_list: list, machine_type: str) -> dict:
@@ -258,7 +285,7 @@ class ShrinkTubeClass:
                 '抽管退料模': DC0121_AD01(self.logger, config_setting_instance),
             }
 
-            mold_name = ['裁剪夹模1', '裁剪夹模1', '成型模', '成型芯轴', '成型退料模', '缩管模', '抽管芯轴', '抽管退料模']
+            mold_name = ['裁剪夹模1', '裁剪夹模2', '成型模', '成型芯轴', '成型退料模', '缩管模', '抽管芯轴', '抽管退料模']
 
             for i in range(len(mold_name)):
                 if mold_name[i] not in mold_list:
@@ -345,7 +372,6 @@ class ShrinkTubeClass:
 
     def get_all_params(self) -> dict:
         """获取当前计算的所有参数，返回嵌套字典"""
-
         # 将关键参数同时放入该字典中
         ALL_params = {
             '管件参数': self.df_to_dict(self.tube_df_params),
@@ -359,11 +385,50 @@ class ShrinkTubeClass:
 
         return ALL_params
 
+    def get_molds_params_df(self):
+        """获取当前计算的所有模具的参数，返回 df"""
+        # 将关键参数同时放入该字典中
+        ALL_params = {
+        }
+
+        for mold_name in self.Mold_Object:
+            mold = self.Mold_Object[mold_name]
+            mold_params = mold.get_params()
+            image_number = mold_params.loc[mold_params['Parameter'] == '图号', 'Value'].values[0][:-4]
+            # print(image_number)
+            mold_name = self.df_to_dict(mold_params)['模具名称']
+
+            parameter_list = list(mold_params['Parameter'])
+            value_list = []
+            for v in mold_params['Value']:
+                value_list.append(str(v))
+            description_list = []
+            calclater_list = []
+            for param in parameter_list:
+                description_list.append(self.Parameter_Description[image_number][param])
+                calclater_list.append(self.Parameter_Calculate_Method[image_number][param])
+
+            params_df = pd.DataFrame({
+                '参数': parameter_list,
+                '值': value_list,
+                '描述': description_list,
+                '计算方法': calclater_list
+            })
+            ALL_params[mold_name] = params_df
+
+        return ALL_params
+
     def save_all(self):
         """将所有参数保存到数据库中"""
+        self.get_all_params()
+        #pprint(self.get_all_params())
 
-        crypto_data = CryptoDataClass(self.logger)
-        crypto_data.encrypt_data(self.get_all_params())
+        # crypto_data = CryptoDataClass(self.logger)
+        # crypto_data.encrypt_data(self.get_all_params())
+
+        # 使用最新的方式保存数据
+        sqlite_control = MoldControl(self.logger)
+        sqlite_control.insert_data(self.get_all_params())
 
     def output_dxf(self, output_path: str):
         """将所有模具的DXF文件保存到指定路径"""
@@ -412,4 +477,33 @@ class ShrinkTubeClass:
         wb.close()
 
         self.logger.info('所有模具的excel文件保存成功， 路径位于：{}'.format(excel_filename))
+
+    def output_zip_from_cache(self,out_root):
+        """将所有模具的DXF文件保存到指定路径"""
+        if not os.path.exists(out_root):
+            os.mkdir(out_root)
+        output_path = os.path.join(out_root, self.get_tube_params()['车种规格'])
+        zip_filename = os.path.join(out_root, self.get_tube_params()['车种规格'] + '.zip')
+
+        if not os.path.exists(output_path):
+            os.mkdir(output_path)
+        else:
+            shutil.rmtree(output_path)
+            os.mkdir(output_path)
+
+        if os.path.exists(zip_filename):
+            os.remove(zip_filename)
+
+        self.output_dxf(output_path)
+        self.output_excel(output_path)
+
+        with zipfile.ZipFile(zip_filename, 'w', zipfile.ZIP_DEFLATED) as zipf:
+            for root, dirs, files in os.walk(output_path):
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    # 计算在压缩文件中的相对路径
+                    arcname = os.path.relpath(file_path, output_path)
+                    zipf.write(file_path, arcname)
+
+        return zip_filename
 

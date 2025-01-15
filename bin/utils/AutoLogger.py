@@ -33,7 +33,7 @@ class AutoLoggerClass:
         """初始化日志记录器"""
 
         # 日志根文件夹的路径，不可以随意修改
-        log_root_path = 'bin/local/logfile'
+        log_root_path = 'database/log'
 
         # 如果日志根文件夹不存在，则创建日志根文件夹
         if not os.path.exists(log_root_path):

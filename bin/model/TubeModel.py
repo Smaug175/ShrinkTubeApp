@@ -296,7 +296,7 @@ class TubeModelClass():
             Params.append(['T'+str(i+1),self.Tx['T'+str(i+1)]])
             try:
                 Params.append(['M'+str(i+1),self.Mx['M'+str(i+1)]])
-                Params.append(['Belta'+str(i+1)+' (radians)',self.belta_rad['Belta'+str(i+1)]])
+                # Params.append(['Belta'+str(i+1)+' (radians)',self.belta_rad['Belta'+str(i+1)]])
             except:
                 temp_str = '第'+str(i+1)+'个过渡段'+': 不存在'+'，报错位置：\nTubeModelClass.get_params()'
                 print(temp_str)
