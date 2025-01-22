@@ -40,6 +40,7 @@ def get_setting():
     st.divider()
     st.write('#### 🛠️参数设定')
     forming = st.toggle("额外壁厚",
+                        value = True,
                         disabled=st.session_state.caculated )
 
     machine_type = st.selectbox(
@@ -51,6 +52,7 @@ def get_setting():
     mold_list = st.multiselect(
         "请选择需要制作的模具：",
         MOLDS[machine_type + (' forming' if forming else '')],
+        default=MOLDS[machine_type + (' forming' if forming else '')],
         disabled=st.session_state.caculated ,
     )
 
