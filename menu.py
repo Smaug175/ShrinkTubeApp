@@ -2,20 +2,31 @@ import streamlit as st
 
 
 def authenticated_menu_valid():
+    st.sidebar.page_link("pages/0_main_page.py", label="主页")
+
+    st.sidebar.divider()
     st.sidebar.header("普通抽")
     st.sidebar.page_link("pages/1_normal_introduce.py", label="📣普通抽介绍", disabled=not st.session_state.license_valid)
     st.sidebar.page_link("pages/2_normal_caculate.py", label="🧮普通抽计算", disabled=not st.session_state.license_valid)
     st.sidebar.page_link("pages/3_normal_search.py", label="🔎普通抽查找数据", disabled=not st.session_state.license_valid)
+    st.sidebar.divider()
+
+    # TP 界面
+    st.sidebar.header("TP抽")
+    st.sidebar.page_link("pages/4_tp_introduce.py", label="📣TP抽介绍", disabled=not st.session_state.license_valid)
+    st.sidebar.page_link("pages/5_tp_caculate.py", label="🧮TP抽计算", disabled=not st.session_state.license_valid)
+    st.sidebar.page_link("pages/6_tp_search.py", label="🔎TP抽查找数据", disabled=not st.session_state.license_valid)
+    #
 
     st.sidebar.divider()
 
     st.sidebar.header("账户管理")
-    st.sidebar.page_link("pages/user.py", label="你的账户")
+    st.sidebar.page_link("pages/_1_user.py", label="你的账户")
 
     if st.session_state.authority in ["admin", "super-admin"]:
-        st.sidebar.page_link("pages/admin.py", label="用户管理")
+        st.sidebar.page_link("pages/_2_admin.py", label="用户管理")
         st.sidebar.page_link(
-            "pages/super-admin.py",
+            "pages/_3_super-admin.py",
             label="用户许可管理",
             disabled=st.session_state.authority != "super-admin",
         )
@@ -30,7 +41,7 @@ def authenticated_menu_valid():
 def unauthenticated_menu():
     # Show a navigation menu for unauthenticated users
     st.sidebar.page_link("app.py", label="🔑登录")
-    st.sidebar.page_link("pages/sign_up.py", label="✍️注册")
+    st.sidebar.page_link("pages/_0_sign_up.py", label="✍️注册")
 
 
 def menu():

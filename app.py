@@ -1,6 +1,6 @@
 import streamlit as st
 from menu import menu
-from bin.utils.SQLite_control import UserControl
+from bin.global_bin.utils.User_SQLite_Control import UserControl
 
 try:
     if "authority" not in st.session_state or "login" not in st.session_state or st.session_state.login == False or st.session_state.authority == None:
@@ -26,6 +26,11 @@ if not st.session_state.login:
             'id': st.session_state.id_number,
             'password': st.session_state.password
         }
+        # 开发使用
+        # input = {
+        #     'id': '1',
+        #     'password': '123'
+        # }
         
         if input['id'] == '' or input['password'] == '':
             st.error("⚠️账号或密码不能为空！")
@@ -43,12 +48,6 @@ if not st.session_state.login:
                 message = result[1]
                 st.error('⚠️'+message)
 else:
-    if st.session_state.authority == 'user':
-        st.switch_page("pages/user.py")
-    elif st.session_state.authority == 'admin':
-        st.switch_page("pages/admin.py")
-    elif st.session_state.authority == 'super-admin':
-        st.switch_page("pages/super-admin.py")
-
+    st.switch_page("pages/0_main_page.py")
 
 menu() # Render the dynamic menu

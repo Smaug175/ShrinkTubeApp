@@ -11,7 +11,7 @@ st.markdown("---")
 st.markdown("### 1. 普通抽")
 st.markdown("普通抽涉及不同机床和模具，其操作流程主要包括四部分，如下所示：")
 
-st.image("sources/normal_process.png", caption="普通抽操作流程", use_container_width=True)
+st.image("bin/normal_bin/images/Normal_Process.png", caption="普通抽操作流程", use_container_width=True)
 
 
 st.markdown("#### 1.1 导入管件的DXF文件")

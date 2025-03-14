@@ -5,3 +5,7 @@ cryptography
 pandas
 notebook
 watchdog
+trimesh
+scipy
+matplotlib
+plotly
