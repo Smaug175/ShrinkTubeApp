@@ -77,7 +77,7 @@ class MoldControl:
             result_list[0] = graph_number
             data.append(result_list)
 
-        keys = insert_sentences_list[machine][big_graph_number][0]
+        keys = insert_sentences_list[machine][big_gaph_number][0]
         keys_list = list(keys)
         for i in range(len(keys_list)):
             if keys_list[i] == '%%Cd0':

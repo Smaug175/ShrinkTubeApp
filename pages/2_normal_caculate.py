@@ -166,12 +166,18 @@ if st.session_state.normal_params_setted:
 
 
 if st.session_state.normal_caculated:
-    show_caculate_results()
     if not st.session_state.normal_saved:
+        if st.button("重新选择", disabled=st.session_state.normal_saved,
+                     use_container_width=True,
+                     type="primary"):
+            st.session_state.normal_caculated = False
+            st.rerun()
+        show_caculate_results()
         if st.button("保存", on_click=save_params_and_files, disabled=st.session_state.normal_saved, use_container_width=True, type="primary"):
             st.session_state.normal_saved = True
             st.rerun()
     else:
+        show_caculate_results()
         st.divider()
         st.write('### 🎉保存成功！')
 

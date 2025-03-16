@@ -9,14 +9,19 @@ def authenticated_menu_valid():
     st.sidebar.page_link("pages/1_normal_introduce.py", label="📣普通抽介绍", disabled=not st.session_state.license_valid)
     st.sidebar.page_link("pages/2_normal_caculate.py", label="🧮普通抽计算", disabled=not st.session_state.license_valid)
     st.sidebar.page_link("pages/3_normal_search.py", label="🔎普通抽查找数据", disabled=not st.session_state.license_valid)
-    st.sidebar.divider()
+    # st.sidebar.divider()
 
     # TP 界面
     st.sidebar.header("TP抽")
     st.sidebar.page_link("pages/4_tp_introduce.py", label="📣TP抽介绍", disabled=not st.session_state.license_valid)
     st.sidebar.page_link("pages/5_tp_caculate.py", label="🧮TP抽计算", disabled=not st.session_state.license_valid)
     st.sidebar.page_link("pages/6_tp_search.py", label="🔎TP抽查找数据", disabled=not st.session_state.license_valid)
-    #
+
+    #Taper
+    st.sidebar.header("Taper")
+    st.sidebar.page_link("pages/7_taper_introduce.py", label="📣Taper介绍", disabled=not st.session_state.license_valid)
+    st.sidebar.page_link("pages/8_taper_caculate.py", label="🧮Taper计算", disabled=not st.session_state.license_valid)
+    st.sidebar.page_link("pages/9_taper_search.py", label="🔎Taper查找数据", disabled=not st.session_state.license_valid)
 
     st.sidebar.divider()
 

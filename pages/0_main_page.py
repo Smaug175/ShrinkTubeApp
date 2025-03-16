@@ -27,4 +27,10 @@ st.page_link("pages/5_tp_caculate.py", label="TP抽计算", disabled=not st.sess
 st.page_link("pages/6_tp_search.py", label="TP抽查找数据", disabled=not st.session_state.license_valid)
 st.divider()
 
+st.write("### 📣Taper")
+st.page_link("pages/7_taper_introduce.py", label="Taper介绍", disabled=not st.session_state.license_valid)
+st.page_link("pages/8_taper_caculate.py", label="Taper计算", disabled=not st.session_state.license_valid)
+st.page_link("pages/9_taper_search.py", label="Taper查找数据", disabled=not st.session_state.license_valid)
+st.divider()
+
 menu_with_redirect()
