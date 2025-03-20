@@ -14,12 +14,12 @@ class UserControl:
         # "user", "admin"
 
         # 创建数据的保存文件夹
-        if not os.path.exists('database'):
-            os.makedirs('database')
-        if not os.path.exists('database/user'):
-            os.makedirs('database/user')
+        if not os.path.exists('../database'):
+            os.makedirs('../database')
+        if not os.path.exists('../database/user'):
+            os.makedirs('../database/user')
 
-        self.database_path = 'database/user/user.db'
+        self.database_path = '../database/user/user.db'
 
         if not os.path.exists(self.database_path):
             conn = sqlite3.connect(self.database_path)
@@ -89,8 +89,74 @@ class UserControl:
                 print('密码错误')
                 return (False, '密码错误')
 
-    def delete(self, delete):
-        pass
+    def query_all(self):
+        """查询所有用户数据"""
+        select_sql = "SELECT * FROM user"
+        conn = sqlite3.connect(self.database_path)
+        cursor = conn.cursor()
+        cursor.execute(select_sql)
+        results = cursor.fetchall()
+        conn.close()
+        if len(results) == 0:
+            return (False, '没有用户')
+        else:
+            return (True, results)
+
+    def delete(self, delete_id):
+        """未完善：删除用户数据"""
+        id = int(delete_id)
+        select_sql = "SELECT * FROM user WHERE id = {}".format(id)
+        conn = sqlite3.connect(self.database_path)
+        cursor = conn.cursor()
+        cursor.execute(select_sql)
+        results = cursor.fetchall()
+
+        if len(results) == 0:
+            print('用户不存在')
+            conn.close()
+            return (False, '用户不存在')
+        else:
+            delete_sql = "DELETE FROM user WHERE id = {}".format(id)
+            try:
+                cursor.execute(delete_sql)
+                conn.commit()
+                print('用户删除成功')
+                conn.close()
+                return (True, '用户删除成功')
+            except Exception as e:
+                print(e)
+                conn.close()
+                return (False, '用户删除失败')
 
     def update(self, update):
-        pass
+        """更新用户数据"""
+        id = int(update['id'])
+        select_sql = "SELECT * FROM user WHERE id = {}".format(id)
+        conn = sqlite3.connect(self.database_path)
+        cursor = conn.cursor()
+        cursor.execute(select_sql)
+        results = cursor.fetchall()
+
+        if len(results) == 0:
+            print('用户不存在')
+            conn.close()
+            return (False, '用户不存在')
+        else:
+            update_fields = []
+            values = []
+            for key, value in update.items():
+                if key != 'id':
+                    update_fields.append(f"{key} = ?")
+                    values.append(value)
+            values.append(id)
+
+            update_sql = "UPDATE user SET " + ", ".join(update_fields) + " WHERE id = ?"
+            try:
+                cursor.execute(update_sql, values)
+                conn.commit()
+                conn.close()
+                return (True, '用户信息更新成功')
+            except Exception as e:
+                print(e)
+                conn.close()
+                return (False, '用户信息更新失败')

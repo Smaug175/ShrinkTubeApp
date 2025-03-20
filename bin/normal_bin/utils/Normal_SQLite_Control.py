@@ -7,16 +7,16 @@ class MoldControl:
     def __init__(self):
         # 按照不同的机床设置不同的数据文件
         self.database_path = {
-            "DC0124": "database/normal-mold/DC0124.db",
-            "DC0121": "database/normal-mold/DC0121.db",
-            "DC0125": "database/normal-mold/DC0125.db",
+            "DC0124": "../database/normal-mold/DC0124.db",
+            "DC0121": "../database/normal-mold/DC0121.db",
+            "DC0125": "../database/normal-mold/DC0125.db",
         }
 
         # 创建数据的保存文件夹
-        if not os.path.exists('database'):
-            os.makedirs('database')
-        if not os.path.exists('database/normal-mold'):
-            os.makedirs('database/normal-mold')
+        if not os.path.exists('../database'):
+            os.makedirs('../database')
+        if not os.path.exists('../database/normal-mold'):
+            os.makedirs('../database/normal-mold')
 
         for key in self.database_path:
             if not os.path.exists(self.database_path[key]):

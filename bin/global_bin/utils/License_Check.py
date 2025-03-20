@@ -6,8 +6,7 @@ def read_license_json():
     with open('../sources/License_json/license.json', 'r') as f:
         license = json.load(f)
     license_dict = dict(license)
-    # 开发用
-    # license_dict = {'123456': {'start': '2020-01-01', 'end': '2020-12-31'}}
+
     return license_dict
 
 
@@ -20,6 +19,6 @@ def license_check(licnese):
         if time_now <= time.mktime(time.strptime(end_time, '%Y-%m-%d')):
             return (True, (start_time, end_time))
         elif time_now > time.mktime(time.strptime(end_time, '%Y-%m-%d')):
-            return (False, '许可证已过期')
+            return (False, f'最后可用日期 {end_time}，许可证已过期，请联系管理员。')
     else:
         return (False, '许可证不存在')

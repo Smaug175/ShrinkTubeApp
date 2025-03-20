@@ -15,6 +15,7 @@ from bin.taper_bin.utils.Taper_SQLite_control import MoldControl
 import shutil
 import zipfile
 
+
 Taper_Mold = {
     "EC0120":["Taper模两瓣", "定位杆", "夹模","后定位模","内定位模","拉杆"],
     "EC0121":["Taper模四瓣", "定位杆", "夹模"]

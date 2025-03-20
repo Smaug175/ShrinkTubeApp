@@ -8,7 +8,7 @@ from bin.tp_bin.cutting_method.center_line_cut import center_analyze_tube
 from bin.tp_bin.cutting_method.straight_tube_cut import center_analyze_straight_tube
 from bin.tp_bin.cutting_method.get_Inter_polation_Points import GetInterpolationPoints
 import time
-
+from bin.global_bin.Global_Parameters import Global_Out_Root
 
 import plotly.graph_objects as go
 def display_stl_model(mesh):
@@ -108,17 +108,17 @@ def get_setting():
     st.write("##### 📐干涉参数")
     apply_taper = st.toggle("后续是否打TAPER",
                             value=False,
-                            disabled=st.session_state.tp_caculated)
+                            disabled=st.session_state.tp_calculated)
     special_thinkness = st.toggle("壁厚特殊计算",
                                   value=True,
-                                  disabled=st.session_state.tp_caculated)
+                                  disabled=st.session_state.tp_calculated)
     # 修改为"干涉长度"及其默认值
     interference_length = st.number_input('请输入干涉长度',
                                           min_value=0,
                                           max_value=100,
                                           value=50,
                                           step=1,
-                                          disabled=st.session_state.tp_caculated,
+                                          disabled=st.session_state.tp_calculated,
                                           help="默认长度50")
     if apply_taper:
         key = 'apply_taper_true'
@@ -133,7 +133,7 @@ def get_setting():
         "请选择需要制作的模具：",
         TP_MOLDS[key],
         default=TP_MOLDS[key],  # 默认选择所有模具
-        disabled=st.session_state.tp_caculated,
+        disabled=st.session_state.tp_calculated,
     )
 
     settings = {
@@ -187,8 +187,7 @@ def show_caculate_results():
 @st.fragment
 def save_params_and_files():
     st.session_state.tp_shrink_tube_instance.save_all()
-    out_root = 'local_cache'
-    st.session_state.tp_zip_file_path = st.session_state.tp_shrink_tube_instance.output_zip_from_cache(out_root, st.session_state.tp_gen3d_points)
+    st.session_state.tp_zip_file_path = st.session_state.tp_shrink_tube_instance.output_zip_from_cache(Global_Out_Root, st.session_state.tp_gen3d_points)
 
 
 if 'tp_shrink_tube_instance' not in st.session_state:
@@ -202,7 +201,7 @@ if 'tp_shrink_tube_instance' not in st.session_state:
     st.session_state.tp_params_setted = False
     st.session_state.tp_uploaded_stl_file = None
     st.session_state.tp_stl_file_loaded = False
-    st.session_state.tp_caculated = False
+    st.session_state.tp_calculated = False
     st.session_state.tp_saved = False
     st.session_state.tp_outputed = False
 
@@ -319,7 +318,7 @@ if st.session_state.choose_loading_method and st.session_state.tp_get_3d_points:
     st.write('#### 👍加载成功：' + st.session_state.tp_uploaded_stl_file.name)
     # 重新加载模型
     if st.button("重新加载型线文件",
-                 disabled=False,
+                 disabled=st.session_state.tp_calculated,
                  use_container_width=True,
                  key='reload-stl-excel',
                  type="primary"):
@@ -355,21 +354,21 @@ if st.session_state.choose_loading_method and st.session_state.tp_get_3d_points:
 if st.session_state.tp_params_setted:
     settings = get_setting()
     if settings['mold_list'] != []:
-        if not st.session_state.tp_caculated:
-            if st.button("计算", on_click=calculate, disabled=st.session_state.tp_caculated, use_container_width=True, type="primary",
+        if not st.session_state.tp_calculated:
+            if st.button("计算", on_click=calculate, disabled=st.session_state.tp_calculated, use_container_width=True, type="primary",
                          args=(settings,)):
-                st.session_state.tp_caculated = True
+                st.session_state.tp_calculated = True
                 st.rerun()
     else:
         st.write("⚠️请选择需要计算的模具！")
 
 
-if st.session_state.tp_caculated:
+if st.session_state.tp_calculated:
     if not st.session_state.tp_saved:
         if st.button("重新选择", disabled=st.session_state.tp_saved,
                      use_container_width=True,
                      type="primary"):
-            st.session_state.tp_caculated = False
+            st.session_state.tp_calculated = False
             st.rerun()
         show_caculate_results()
         if st.button("保存", on_click=save_params_and_files, disabled=st.session_state.tp_saved, use_container_width=True, type="primary"):

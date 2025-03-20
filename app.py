@@ -16,7 +16,7 @@ def login_wiget():
     st.write("# ⌨️🔑登录")
     st.write("##### 请输入账号和密码：")
     st.session_state.id_number = st.text_input(label="账号：", value="")
-    st.session_state.password = st.text_input(label="密码：", value="")
+    st.session_state.password = st.text_input(label="密码：", value="", type="password")
 
 if not st.session_state.login:
     login_wiget()
@@ -26,11 +26,6 @@ if not st.session_state.login:
             'id': st.session_state.id_number,
             'password': st.session_state.password
         }
-        # 开发使用
-        # input = {
-        #     'id': '1',
-        #     'password': '123'
-        # }
         
         if input['id'] == '' or input['password'] == '':
             st.error("⚠️账号或密码不能为空！")

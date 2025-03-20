@@ -7,14 +7,14 @@ import pandas as pd
 class MoldControl:
     def __init__(self):
         self.database_path = {
-            "DC0128": "database/tp-mold/DC0128.db",
+            "DC0128": "../database/tp-mold/DC0128.db",
         }
 
         # 创建数据的保存文件夹
-        if not os.path.exists('database'):
-            os.makedirs('database')
-        if not os.path.exists('database/tp-mold'):
-            os.makedirs('database/tp-mold')
+        if not os.path.exists('../database'):
+            os.makedirs('../database')
+        if not os.path.exists('../database/tp-mold'):
+            os.makedirs('../database/tp-mold')
 
         for key in self.database_path:
             if not os.path.exists(self.database_path[key]):
@@ -77,7 +77,7 @@ class MoldControl:
             result_list[0] = graph_number
             data.append(result_list)
 
-        keys = insert_sentences_list[machine][big_gaph_number][0]
+        keys = insert_sentences_list[machine][big_graph_number][0]
         keys_list = list(keys)
         for i in range(len(keys_list)):
             if keys_list[i] == '%%Cd0':

@@ -28,13 +28,8 @@ def authenticated_menu_valid():
     st.sidebar.header("账户管理")
     st.sidebar.page_link("pages/_1_user.py", label="你的账户")
 
-    if st.session_state.authority in ["admin", "super-admin"]:
+    if st.session_state.authority == "admin":
         st.sidebar.page_link("pages/_2_admin.py", label="用户管理")
-        st.sidebar.page_link(
-            "pages/_3_super-admin.py",
-            label="用户许可管理",
-            disabled=st.session_state.authority != "super-admin",
-        )
 
     st.sidebar.divider()
 

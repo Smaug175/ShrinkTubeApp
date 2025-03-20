@@ -15,7 +15,7 @@ def sign_up_wiget():
     st.write("##### 请填写以下信息：")
   
     st.session_state.id_number = st.text_input(label="账号（只能使用数字）：", value="")
-    st.session_state.password = st.text_input(label="密码：", value="")
+    st.session_state.password = st.text_input(label="密码：", value="", type="password")
     st.session_state.user_name = st.text_input(label="姓名：", value="")
     st.session_state.license = st.text_input(label="许可证：", value="")
     

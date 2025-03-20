@@ -8,7 +8,7 @@ from bin.taper_bin.cutting_method.getInterpolationPoints import GetInterpolation
 import plotly.graph_objects as go
 import time
 import os
-
+from bin.global_bin.Global_Parameters import Global_Out_Root
 
 def display_stl_model(mesh):
     """使用Plotly在Streamlit中显示STL模型"""
@@ -185,9 +185,7 @@ def show_calculate_results():
 @st.fragment
 def save_params_and_files():
     st.session_state.taper_instance.save_all()
-    out_root = 'local_cache'
-    st.session_state.taper_zip_file_path = st.session_state.taper_instance.output_zip_from_cache(out_root)
-
+    st.session_state.taper_zip_file_path = st.session_state.taper_instance.output_zip_from_cache(Global_Out_Root)
 
 # 检查 DXF 文件是否已上传
 if 'taper_instance' not in st.session_state:
@@ -319,7 +317,7 @@ if st.session_state.taper_choose_loading_method and st.session_state.taper_get_3
     st.write('#### 👍加载成功：' + st.session_state.taper_uploaded_stl_file.name)
     # 重新加载模型
     if st.button("重新加载型线文件",
-                 disabled=False,
+                 disabled=st.session_state.taper_calculated,
                  use_container_width=True,
                  key='reload-stl-excel',
                  type="primary"):
@@ -387,7 +385,7 @@ if st.session_state.taper_saved:
             btn = st.download_button(
                 label="下载计算结果",
                 data=file,
-                file_name=st.session_state.taper_zip_file_path,
+                file_name=os.path.basename(st.session_state.taper_zip_file_path),
                 mime="application/zip",
                 disabled=st.session_state.taper_outputed,
                 type="primary",

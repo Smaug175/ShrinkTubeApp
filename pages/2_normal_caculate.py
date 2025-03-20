@@ -3,6 +3,7 @@ from menu import menu_with_redirect
 import tempfile
 from bin.normal_bin.Normal_Shrink_Tube import ShrinkTubeClass, MOLDS
 import os
+from bin.global_bin.Global_Parameters import Global_Out_Root
 
 # 显示侧边
 menu_with_redirect()
@@ -41,19 +42,19 @@ def get_setting():
     st.write('#### 🛠️参数设定')
     forming = st.toggle("额外壁厚",
                         value = True,
-                        disabled=st.session_state.normal_caculated )
+                        disabled=st.session_state.normal_calculated)
 
     machine_type = st.selectbox(
         "请选择管件加工的机床型号：",
         ("DC0124", "DC0121", "DC0125"),
-        disabled=st.session_state.normal_caculated ,
+        disabled=st.session_state.normal_calculated ,
     )
 
     mold_list = st.multiselect(
         "请选择需要制作的模具：",
         MOLDS[machine_type + (' forming' if forming else '')],
         default=MOLDS[machine_type + (' forming' if forming else '')],
-        disabled=st.session_state.normal_caculated ,
+        disabled=st.session_state.normal_calculated ,
     )
 
     settings = {
@@ -104,8 +105,7 @@ def show_caculate_results():
 @st.fragment
 def save_params_and_files():
     st.session_state.normal_shrink_tube_instance.save_all()
-    out_root = 'local_cache'
-    st.session_state.normal_zip_file_path = st.session_state.normal_shrink_tube_instance.output_zip_from_cache(out_root)
+    st.session_state.normal_zip_file_path = st.session_state.normal_shrink_tube_instance.output_zip_from_cache(Global_Out_Root)
 
 
 
@@ -113,7 +113,7 @@ if 'normal_shrink_tube_instance' not in st.session_state:
     st.session_state.normal_shrink_tube_instance = ShrinkTubeClass(None) # 重新加载
     st.session_state.normal_file_loaded = False
     st.session_state.normal_params_setted = False
-    st.session_state.normal_caculated = False
+    st.session_state.normal_calculated = False
     st.session_state.normal_saved = False
     st.session_state.normal_outputed = False
 
@@ -155,22 +155,22 @@ else:
 if st.session_state.normal_params_setted:
     settings = get_setting()
     if settings['mold_list'] != []:
-        if not st.session_state.normal_caculated:
-            if st.button("计算", on_click=calculate, disabled=st.session_state.normal_caculated, use_container_width=True, type="primary",
+        if not st.session_state.normal_calculated:
+            if st.button("计算", on_click=calculate, disabled=st.session_state.normal_calculated, use_container_width=True, type="primary",
                          args=(settings,)):
-                st.session_state.normal_caculated = True
+                st.session_state.normal_calculated = True
                 st.rerun()
     else:
         st.write("⚠️请选择需要计算的模具！")
 
 
 
-if st.session_state.normal_caculated:
+if st.session_state.normal_calculated:
     if not st.session_state.normal_saved:
         if st.button("重新选择", disabled=st.session_state.normal_saved,
                      use_container_width=True,
                      type="primary"):
-            st.session_state.normal_caculated = False
+            st.session_state.normal_calculated = False
             st.rerun()
         show_caculate_results()
         if st.button("保存", on_click=save_params_and_files, disabled=st.session_state.normal_saved, use_container_width=True, type="primary"):

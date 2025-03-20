@@ -7,15 +7,15 @@ class MoldControl:
     def __init__(self):
         # 按照不同的机床设置不同的数据文件
         self.database_path = {
-            "EC0120": "database/taper-mold/EC0120.db",
-            "EC0121": "database/taper-mold/EC0121.db"
+            "EC0120": "../database/taper-mold/EC0120.db",
+            "EC0121": "../database/taper-mold/EC0121.db"
         }
 
         # 创建数据的保存文件夹
-        if not os.path.exists('database'):
-            os.makedirs('database')
-        if not os.path.exists('database/taper-mold'):
-            os.makedirs('database/taper-mold')
+        if not os.path.exists('../database'):
+            os.makedirs('../database')
+        if not os.path.exists('../database/taper-mold'):
+            os.makedirs('../database/taper-mold')
 
         for key in self.database_path:
             if not os.path.exists(self.database_path[key]):

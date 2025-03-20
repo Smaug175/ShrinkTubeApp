@@ -1,0 +1,1 @@
+Global_Out_Root = '../local_cache'

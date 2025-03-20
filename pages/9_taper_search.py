@@ -1,8 +1,6 @@
 import streamlit as st
 from menu import menu_with_redirect
 from bin.taper_bin.utils.Taper_SQLite_control import MoldControl
-import sqlite3
-import pandas as pd
 import time
 
 # 显示侧边菜单
